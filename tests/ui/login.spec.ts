@@ -32,25 +32,36 @@ test.describe('Login', () => {
     await expect(loginPage.errorMessage).toHaveText(errorMessages.lockedOut);
     await expect(loginPage.errorIcons).toHaveCount(2);
   });
+  
+  // TC-03
+  test('login blocked when both input fields are empty', async () => {
+    await loginPage.login('', '');
 
-  // ── Your turn (week 2) ─────────────────────────────────────────────
-  // Translate the remaining manual cases following the pattern above:
-  //
-  // TODO: TC-03 — login blocked when both input fields are empty
-  //   hint: loginPage.login('', '') — the fill() calls are skipped,
-  //   only the button is clicked.
-  //
-  // TODO: TC-04 — login blocked when password field is empty
-  //
-  // TODO: TC-05 — login blocked when username field is empty
-  //
-  // TODO: TC-06 — login blocked when password is wrong
-  //   hint: errorMessages.noMatch is already in fixtures/users.ts
-  //
-  // Stretch goal: TC-03..06 share a shape (input combo → expected error).
-  // Look up "parameterized tests" in Playwright docs and rewrite them as
-  // a single data-driven loop. Then decide: is the loop actually more
-  // readable, or were four explicit tests better? (Real teams debate
-  // this — having an opinion with reasons is interview material.)
-  // ───────────────────────────────────────────────────────────────────
+    await expect(loginPage.errorMessage).toHaveText(errorMessages.emptyUsername);
+    await expect(loginPage.errorIcons).toHaveCount(2);
+  });
+
+  // TC-04
+  test('login blocked when password field is empty', async () => {
+    await loginPage.login(users.standard.username, '');
+
+    await expect(loginPage.errorMessage).toHaveText(errorMessages.passwordRequired);
+    await expect(loginPage.errorIcons).toHaveCount(2);
+  });
+
+  // TC-05
+  test('login blocked when username field is empty', async () => {
+    await loginPage.login('', users.standard.password);
+
+    await expect(loginPage.errorMessage).toHaveText(errorMessages.usernameRequired);
+    await expect(loginPage.errorIcons).toHaveCount(2);
+  });
+
+  // TC-06
+  test('login blocked when password is wrong', async () => {
+    await loginPage.login(users.standard.username, 'wrongpassword');
+
+    await expect(loginPage.errorMessage).toHaveText(errorMessages.noMatch);
+    await expect(loginPage.errorIcons).toHaveCount(2);
+  });
 });
