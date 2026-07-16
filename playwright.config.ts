@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test';
  * Docs: https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir: './projects/saucedemo/tests',
 
   // Fail the build on CI if test.only was accidentally committed
   forbidOnly: !!process.env.CI,
@@ -25,12 +25,8 @@ export default defineConfig({
   },
 
   projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    // Uncomment to run cross-browser:
-    // { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    // { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] }, },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
 });
